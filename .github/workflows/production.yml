@@ -18,9 +18,9 @@ jobs:
           echo PUB     $${{ github.event.action == 'published' }}
 
       - name: Tell Me If This Is a RELEASE
-        if: github.event_name == 'release' && github.event.action == 'published'
+        if: github.event_name == 'release' && github.event.action == 'published' && github.event.release.prerelease != 'true'
         run: echo "A FULL release was found"
 
       - name: Tell Me If This Is a PRE-RELEASE
-        if: github.event_name != 'release' || github.event.action != 'published'
+        if: github.event_name == 'release' && github.event.action == 'published' && github.event.release.prerelease == 'true'
         run: echo "A PRE-release was found"
