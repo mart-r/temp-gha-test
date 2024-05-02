@@ -9,6 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Tell me the VALUES
+        run: |
+          echo PRE REL $${{ github.event.release.prerelease }}
+          echo EVENT   $${{ github.event_name }}
+          echo REL     $${{ github.event_name == 'release' }}
+          echo ACTION  $${{ github.event.action}}
+          echo PUB     $${{ github.event.action == 'published' }}
 
       - name: Tell Me If This Is a RELEASE
         if: github.event_name == 'release' && github.event.action == 'published'
