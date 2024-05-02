@@ -17,4 +17,3 @@ jobs:
       - name: Tell Me If This Is a PRE-RELEASE
         if: "github.event.release.prerelease"
         run: echo "A PRE-release was found"
-
