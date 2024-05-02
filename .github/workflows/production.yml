@@ -6,11 +6,15 @@ on:
 
 jobs:
   build:
-    if: "!github.event.release.prerelease"
     runs-on: ubuntu-latest
 
     steps:
 
-      - name: FAKE Publish production distribution to PyPI
-        run: echo "A fulll release was found (2)"
+      - name: Tell Me If This Is a RELEASE
+        if: "!github.event.release.prerelease"
+        run: echo "A full release was found"
+
+      - name: Tell Me If This Is a PRE-RELEASE
+        if: "github.event.release.prerelease"
+        run: echo "A PRE-release was found"
 
