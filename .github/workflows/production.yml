@@ -15,5 +15,5 @@ jobs:
         run: echo "A FULL release was found"
 
       - name: Tell Me If This Is a PRE-RELEASE
-        if: !(github.event_name == 'release' && github.event.action == 'published')
+        if: github.event_name != 'release' || github.event.action != 'published'
         run: echo "A PRE-release was found"
