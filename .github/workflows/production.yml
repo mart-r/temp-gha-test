@@ -1,33 +1,29 @@
-name: production
+name: PyPI Release Workflow
 
 on:
-  push:
-    branches: [ production, "v[0-9]+.[0-9]+.post" ]
   release:
-    types: [ published ]
+    types: [published]
 
 jobs:
-  build-n-publish-to-pypi:
-    runs-on: ubuntu-20.04
-    concurrency: build-n-publish-to-pypi
+  build:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout production
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.release.target_commitish }}
-          fetch-depth: 0
-
       - name: Determine if it's a pre-release
         id: check_prerelease
         run: echo "IS_PRERELEASE=${{ github.event.release.prerelease }}" >> $GITHUB_ENV
 
-      - name: Publish production distribution to PyPI
+      - name: Check if it's a tag
+        id: check_tag
+        run: echo "IS_TAG=${{ startsWith(github.ref, 'refs/tags/') }}" >> $GITHUB_ENV
+
+      - name: Check if it's a full release
+        if: ${{ env.IS_TAG == 'true' && env.IS_PRERELEASE != 'true' }}
+        run: echo "A full release was found."
+
+      - name: FAKE Publish production distribution to PyPI
         if: |
-          startsWith(github.ref, 'refs/tags') &&
-          ${{ env.IS_PRERELEASE != 'true' }}
-        run: echo "DOING RELEASE"
-#        uses: pypa/gh-action-pypi-publish@v1.4.2
-#        with:
-#          password: ${{ secrets.PYPI_API_TOKEN }}
+          env.IS_TAG == 'true' &&
+          env.IS_PRERELEASE != 'true'
+        run: echo "A fulll release was found (2)"
 
